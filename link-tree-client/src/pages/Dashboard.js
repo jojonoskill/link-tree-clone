@@ -1,6 +1,6 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useLoginState} from '../context/UserState';
-import {json, useNavigate} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import NewLinkPopup from '../components/NewLinkPopup';
 import {child, get, getDatabase, ref} from 'firebase/database';
 
@@ -10,15 +10,13 @@ const Dashboard = () => {
   const [links, setLinks] = useState([]);
 
   useEffect( () => {
-    setTimeout(() => {
-      if (!user) navigate('/home');
-      fetchLinks();
-    }, 1000);
+    fetchLinks();
+    if (!user) navigate('/home');
   }, []);
 
-  const fetchLinks = async () => {
+  const fetchLinks = () => {
     const dbRef = ref(getDatabase());
-    await get(child(dbRef, `/${user.username}/links`)).then(snapshot => {
+    get(child(dbRef, `/${user.username}/links`)).then(snapshot => {
       if (snapshot.exists()) {
         setLinks(snapshot.val());
       }
@@ -27,7 +25,7 @@ const Dashboard = () => {
     });
   }
 
-  const signOut = (event) => {
+  const signOut = () => {
     setUser(null);
     localStorage.setItem('user', null);
     navigate('/home');
@@ -44,13 +42,14 @@ const Dashboard = () => {
         <br/>
         <h2>your links</h2>
         {links.map((link, index)=>{
+          console.log(link, index)
           return(
-          <div key={index}>
-            <hr/>
-            <h4>{link.header}</h4>
-            <h5>{link.link}</h5>
-            <button>delete link?</button>
-          </div>
+              <div key={index}>
+                <hr/>
+                <h4>{link.header}</h4>
+                <h5>{link.link}</h5>
+                <button>delete link?</button>
+              </div>
           )
         })}
       </div>

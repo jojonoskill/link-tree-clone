@@ -24,28 +24,21 @@ const NewLinkPopup = () => {
 
   const createLink = async (event) => {
     event.preventDefault();
-    const links = [];
     const dbRef = ref(getDatabase());
-    get(child(dbRef, `/${user.username}/links`)).then((snapshot) => {
-      for(let val of snapshot.val()){
-        links.push(val);
-      }
+    const snapshot = (await get(child(dbRef, `/${user.username}/links`))).val();
+    const newLinksArr = [];
+    for (const linkKey in snapshot) {
+      newLinksArr.push(snapshot[linkKey]);
+    }
+    newLinksArr.push(linkData);
 
-    }).catch((error) => {
-      console.error(error);
-      return false;
-    });
 
-    links.push({
-      header:linkData.header,
-      link:linkData.link,
-    });
     const db = getDatabase();
     await set(ref(db, '/' + user.username), {
       ...user,
-      links: links,
-    }).then((result) => {
-      console.log(links);
+      links: newLinksArr,
+    }).then(() => {
+      console.log('erfolglos');
     }).catch(e => {
       alert(e);
     });
