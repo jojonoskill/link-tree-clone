@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useLoginState} from '../context/UserState';
 import {useNavigate} from 'react-router-dom';
 import NewLinkPopup from '../components/NewLinkPopup';
-import {child, get, getDatabase, ref} from 'firebase/database';
+import {child, get, getDatabase, ref, set} from 'firebase/database';
 
 const Dashboard = () => {
   const {user, setUser} = useLoginState();
@@ -10,8 +10,12 @@ const Dashboard = () => {
   const [links, setLinks] = useState([]);
 
   useEffect( () => {
-    fetchLinks();
     if (!user) navigate('/home');
+
+    const intervalId = setInterval(() => {
+      fetchLinks();
+    }, 1000);
+    return () => clearInterval(intervalId);
   }, []);
 
   const fetchLinks = () => {
@@ -31,8 +35,19 @@ const Dashboard = () => {
     navigate('/home');
   }
 
-  const navigatePage = (index) => {
-    navigate(`/redirect/${user.username}/${index}`);
+  // const navigatePage = (index) => {
+  //   navigate(`/redirect/${user.username}/${index}`);
+  // }
+
+  const deleteLink = (index) => {
+    const arr = links;
+    arr.splice(index,index === 0? 1: index);
+    const db = getDatabase();
+    set(ref(db, '/' + user.username), {
+      ...user,
+      links: arr,
+    })
+    if (arr.length === 0) window.location.reload(false);
   }
 
   return (
@@ -42,16 +57,19 @@ const Dashboard = () => {
         <br/>
         <h2>your links</h2>
         {links.map((link, index)=>{
-          console.log(link, index)
           return(
               <div key={index}>
                 <hr/>
                 <h4>{link.header}</h4>
                 <h5>{link.link}</h5>
-                <button>delete link?</button>
+                <button onClick={() => deleteLink(index)}>delete link?</button>
               </div>
           )
         })}
+        <br/>
+        <div>
+          <h3>link to your dashboard : {`localhost:3000/linktree/${user.username}`}</h3>
+        </div>
       </div>
   );
 };

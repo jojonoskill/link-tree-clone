@@ -12,7 +12,7 @@ const NewLinkPopup = () => {
     header: '',
     link: '',
   });
-  const {user, setUser} = useLoginState();
+  const {user} = useLoginState();
 
   const openModal = () => {
     setIsOpen(true);
@@ -37,11 +37,10 @@ const NewLinkPopup = () => {
     await set(ref(db, '/' + user.username), {
       ...user,
       links: newLinksArr,
-    }).then(() => {
-      console.log('erfolglos');
     }).catch(e => {
       alert(e);
-    });
+    })
+    closeModal();
   };
 
 
