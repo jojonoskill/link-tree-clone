@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useLoginState} from '../context/UserState';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import NewLinkPopup from '../components/NewLinkPopup';
 import {child, get, getDatabase, ref, set} from 'firebase/database';
 
@@ -8,9 +8,11 @@ const Dashboard = () => {
   const {user, setUser} = useLoginState();
   const navigate = useNavigate();
   const [links, setLinks] = useState([]);
+  const params = useParams()
 
   useEffect( () => {
-    if (!user) navigate('/home');
+    if (user.username === '') navigate('/home');
+    if(user.username !== params.username) navigate('/home');
 
     const intervalId = setInterval(() => {
       fetchLinks();

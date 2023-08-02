@@ -4,7 +4,10 @@ const LoginContext = createContext();
 
 
 export const LoginStateProvider = ({ children }) => {
-  const [user , setUser] = useState(JSON.parse(localStorage.getItem('user')));
+  const [user , setUser] = useState(JSON.parse(localStorage.getItem('user')) || {
+    username:'',
+    password:'',
+  });
 
   return (
       // Provide the state and setState function to all components within this context

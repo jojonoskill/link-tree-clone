@@ -8,6 +8,7 @@ import DashboardRedirect from './pages/DashboardRedirect';
 import { useLoginState } from './context/UserState';
 import Home from './pages/Home';
 import LinkTree from './pages/LinkTree';
+import LinkTreeRedirect from './pages/LinkTreeRedirect';
 
 function App() {
   const {user, setUser} = useLoginState();
@@ -25,6 +26,7 @@ function App() {
         <Route path='/home' element={<Home/>}/>
         <Route path='/' element={<Navigate to='/home' replace/>} />
         <Route path='/linktree/:username' element={<LinkTree/>}/>
+        <Route path='/linktree/:username/:id' element={<LinkTreeRedirect/>}/>
       </Routes>
     </div>
   );

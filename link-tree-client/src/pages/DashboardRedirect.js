@@ -6,7 +6,7 @@ const DashboardRedirect = () => {
   const {user, setUser} = useLoginState();
   const navigate = useNavigate();
   useEffect(() => {
-    if(user) navigate(`/dashboard/${user.username}`, { replace: true });
+    if(user.username !== '') navigate(`/dashboard/${user.username}`, { replace: true });
     else navigate('/home', { replace: true });
   })
   return (
