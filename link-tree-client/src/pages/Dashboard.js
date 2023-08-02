@@ -32,8 +32,14 @@ const Dashboard = () => {
   }
 
   const signOut = () => {
-    setUser(null);
-    localStorage.setItem('user', null);
+    setUser({
+      username:'',
+      password:'',
+    });
+    localStorage.setItem('user', JSON.stringify({
+      username:'',
+      password:'',
+    }));
     navigate('/home');
   }
 

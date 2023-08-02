@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React,{useState} from 'react';
 import {getDatabase, child, ref, set, get} from 'firebase/database';
 import {useNavigate} from 'react-router-dom';
 
@@ -56,19 +56,14 @@ const RegisterForm = () => {
       username: formData.username,
       password: formData.password,
       links: [],
-    }).then((result) => {
+    }).then(() => {
       alert('succesful registration');
+      navigate('/login');
     }).catch(e => {
       alert(e);
     })
 
   }
-
-  // useEffect(() => {
-  //   lo
-  // })
-
-
 
   return (
       <div>
@@ -78,11 +73,7 @@ const RegisterForm = () => {
             onChange={handleChange}
             type='text'
             required
-            className={
-            formData.username.length < 12
-                ? 'login is-invalid'
-                : 'login'
-            }
+            className='login'
             placeholder='your username'
           />
           <input
@@ -90,10 +81,7 @@ const RegisterForm = () => {
             onChange={handleChange}
             type='password'
             required
-            className={formData.password.length > 8
-                ?'password'
-                :'password is-invalid'
-            }
+            className='password'
             placeholder='your password'
             />
           <input
@@ -101,17 +89,26 @@ const RegisterForm = () => {
             onChange={handleChange}
             type='password'
             required
-            className={formData.repeatedPassword === formData.password?
-                'repeated-password'
-                :'repeated-password is-invalid'
-            }
+            className='repeated-password'
             placeholder='repeat your password'
             />
           <button onClick={registerUser}>sign up!</button>
         </form>
         <hr/>
-        <h3>{formData.errors[0]}</h3>
-        <h3>Already have an account?</h3><button onClick={() => navigate('/login')}>sign in!</button>
+        <h3 style={{
+          color: 'red',
+          display: 'flex',
+          justifyContent:'center',
+        }}>{formData.errors[0]}</h3>
+        <div style={{
+          display: 'flex',
+          justifyContent:'center',
+        }}>
+          <h3 style={{
+            marginRight:'200px'
+          }}>Already have an account?</h3>
+          <button onClick={() => navigate('/login')}>sign in!</button>
+        </div>
       </div>
   );
 };
