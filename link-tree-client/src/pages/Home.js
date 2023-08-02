@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {Navigate, useNavigate} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import {useLoginState} from '../context/UserState';
 
 const Home = () => {
@@ -10,9 +10,9 @@ const Home = () => {
   })
   return (
       <div>
-        <h1>Welcome to the cum zone!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</h1>
-        <button onClick={() => navigate('/register')}>sign up</button>
-        <button onClick={() => navigate('/login')}>sign in</button>
+        <h1>Linktree clone!</h1>
+        <button onClick={() => navigate('/register')}>Sign up</button>
+        <button onClick={() => navigate('/login')}>Login</button>
       </div>
   );
 };
